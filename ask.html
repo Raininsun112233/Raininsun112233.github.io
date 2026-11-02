@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ask Raininsun a question, chat, or explore a computer problem together.">
+  <title>Ask Me �� Raininsun</title>
+  <link rel="stylesheet" href="styles.css?v=20261102-1">
+</head>
+<body class="light ask-page">
+  <div class="site-shell">
+    <header class="topbar ask-topbar">
+      <b>RAININSUN</b>
+      <span>03 / 03 &nbsp; LET��S CONNECT</span>
+    </header>
+    <main>
+      <section class="ask-hero" aria-labelledby="ask-title">
+        <p class="ask-eyebrow">OPEN TO A CONVERSATION</p>
+        <h1 id="ask-title">ASK ME</h1>
+        <p class="ask-intro">ask everything you like</p>
+        <span class="ask-dot" aria-hidden="true"></span>
+      </section>
+
+      <nav class="tabs" aria-label="Main navigation">
+        <a href="index.html">About Me</a>
+        <a href="work.html">My Work</a>
+        <a class="active" href="ask.html" aria-current="page">Ask Me</a>
+      </nav>
+
+      <section class="ask-contact" aria-label="Contact by email">
+        <div>
+          <p>HAVE A QUESTION OR JUST WANT TO CHAT?</p>
+          <a class="ask-email" href="mailto:rain802010@163.com">rain802010@163.com</a>
+        </div>
+        <div class="ask-copy-control">
+          <button type="button" id="copy-email" data-email="rain802010@163.com">Copy email <span aria-hidden="true">�J</span></button>
+          <span id="copy-status" class="copy-status" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="ask-section" aria-labelledby="connect-title">
+        <p class="ask-eyebrow">TWO WAYS TO CONNECT</p>
+        <h2 id="connect-title">What we could do together</h2>
+        <div class="ask-grid">
+          <article class="ask-card">
+            <small>01</small>
+            <h3>Let��s talk</h3>
+            <p>Open to anyone. We can chat about everyday questions, interests, or whatever is on your mind. I can usually set aside about 30 minutes a day.</p>
+            <div class="ask-image-slot" aria-hidden="true"></div>
+          </article>
+          <article class="ask-card">
+            <small>02</small>
+            <h3>Computer questions</h3>
+            <p>Got an error or a confusing computer problem? Send a screenshot and the error report, if you have one. We can look at possible causes together.</p>
+            <div class="ask-image-slot" aria-hidden="true"></div>
+          </article>
+          <div class="ask-card ask-card-empty" aria-hidden="true"></div>
+          <div class="ask-card ask-card-empty" aria-hidden="true"></div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer ask-footer"><span>RAININSUN / ASK ME</span><a href="index.html">Back to About Me</a></footer>
+  </div>
+  <script>
+    const copyButton = document.getElementById('copy-email');
+    const copyStatus = document.getElementById('copy-status');
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(copyButton.dataset.email);
+        copyStatus.textContent = 'Copied!';
+      } catch {
+        copyStatus.textContent = 'Could not copy. Please select the email address above.';
+      }
+    });
+  </script>
+</body>
+</html>
