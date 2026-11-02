@@ -9,4 +9,4 @@ A static website adapted from the linked Figma file.
 
 The pages use plain HTML and CSS, with all images stored locally in `assets/`. No package installation or build step is needed. To preview locally, open `index.html` in a browser.
 
-Source design: https://www.figma.com/design/xkN3kmyJptPdEeKWESzqpR/���ո�
+Source design: https://www.figma.com/design/xkN3kmyJptPdEeKWESzqpR/最终稿
