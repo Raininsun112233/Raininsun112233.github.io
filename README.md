@@ -1,12 +1,16 @@
 # Raininsun Portfolio
-A static website adapted from the linked Figma file.
+
+Personal portfolio website adapted from the [Figma design](https://www.figma.com/design/xkN3kmyJptPdEeKWESzqpR/最终稿).
 
 ## Pages
-- Open `index.html` for About Me.
-- Open `work.html` for My Work.
-- Open `ask.html` for Ask Me. The page includes two ways to connect, two blank blocks reserved for later, and a working copy-email button.
-- Open `iris.html` for the IRIS project details.
 
-The pages use plain HTML and CSS, with all images stored locally in `assets/`. No package installation or build step is needed. To preview locally, open `index.html` in a browser.
+- `index.html` — About Me
+- `work.html` — My Work
+- `ask.html` — Ask Me, including an email link and copy button
+- `dig.html` — Want to dig in?
+- `games.html` — Mini Games
+- `iris.html` — IRIS
 
-Source design: https://www.figma.com/design/xkN3kmyJptPdEeKWESzqpR/最终稿
+The site includes optional roaming penguins. Turn them on with the button at the bottom right; click one to see a message, or drag it around the page. The 26 messages are editable in `penguin.js`.
+
+This is a static site. Open `index.html` locally or visit [raininsun112233.github.io](https://raininsun112233.github.io/).

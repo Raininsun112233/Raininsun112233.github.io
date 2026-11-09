@@ -1,0 +1,81 @@
+.ask-layout{padding:54px 0 40px}
+.ask-header{height:81px;border-bottom:1px solid #d4d4cf;display:flex;align-items:flex-start;justify-content:space-between;padding-top:8px;font-size:24px;font-weight:700}
+.ask-header span{padding-top:4px;color:#6b6b6b;font-size:16px;font-weight:500}
+.ask-hero{position:relative;min-height:260px;margin-top:55px}
+.ask-eyebrow{color:#6b6b6b;font-size:18px;font-weight:700;line-height:28px}
+.ask-hero h1{font-size:118px;line-height:1.15;letter-spacing:-.04em;margin:6px 0 22px}
+.ask-intro{font-size:25px}
+.ask-avatar{position:absolute;right:97px;top:-27px;width:235px;z-index:1}
+.ask-avatar>img{width:235px;height:235px;object-fit:cover;border-radius:40px}
+.ask-status{width:235px;height:36px;margin-top:16px;padding:6px 14px;border:1px solid #e3e0d6;border-radius:18px;background:#fff;color:#292929;display:flex;align-items:center;justify-content:space-between;font:500 12px Inter,Arial,sans-serif;cursor:pointer}
+.ask-status img{width:9px;height:9px}
+.ask-status[data-status='离线'] img{filter:grayscale(1)}
+.ask-status[data-status='睡眠'] img{filter:hue-rotate(180deg)}
+.ask-status-options{position:absolute;top:290px;right:0;width:235px;padding:5px;border:1px solid #e3e0d6;border-radius:12px;background:#fff;box-shadow:0 6px 18px #0002}
+.ask-status-options[hidden]{display:none}
+.ask-status-options button{display:block;width:100%;padding:8px 10px;border:0;border-radius:7px;background:none;text-align:left;font:500 13px Inter,Arial,sans-serif;cursor:pointer}
+.ask-status-options button:hover,.ask-status-options button:focus-visible{background:#fff5c2}
+.ask-switch{margin-top:56px}
+.ask-switch a{font-size:22px}
+.ask-contact{min-height:158px;margin-top:47px;padding:25px 34px;border-radius:28px;background:var(--yellow);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.ask-contact p{font-size:18px;font-weight:700;margin-bottom:12px}
+.ask-contact a{font-size:34px;font-weight:700;overflow-wrap:anywhere}
+.ask-contact a:hover{text-decoration:underline}
+.ask-copy{width:232px;flex:none;text-align:center}
+.ask-copy button{width:232px;min-height:64px;border:0;border-radius:32px;background:var(--ink);color:#fff;font:700 20px Inter,Arial,sans-serif;cursor:pointer}
+.ask-copy button:hover,.ask-copy button:focus-visible{background:#444}
+.ask-copy button:focus-visible,.ask-status:focus-visible,.ask-status-options button:focus-visible{outline:3px solid #0878d1;outline-offset:3px}
+.ask-copy span{display:block;min-height:0;font-size:13px;font-weight:600;margin-top:4px}
+.ask-connect{margin-top:55px}
+.ask-connect h2{font-size:42px;margin:4px 0 28px}
+.ask-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px}
+.ask-card{min-height:485px;padding:28px 30px;border:1px solid #d4d4cf;border-radius:24px;background:#fff;display:flex;flex-direction:column}
+.ask-card small{color:#6b6b6b;font-size:18px;font-weight:700}
+.ask-card h3{font-size:30px;margin:18px 0}
+.ask-card p{color:#6b6b6b;font-size:18px;line-height:1.55}
+.ask-image-slot{height:215px;margin-top:auto;border:1px solid #d4d4cf;border-radius:14px;background:#f6f6f4}
+.ask-footer{display:flex;justify-content:space-between;margin-top:72px;padding-top:20px;border-top:1px solid #d4d4cf;color:#6b6b6b;font-size:16px}
+.ask-footer a:hover{text-decoration:underline}
+@media(max-width:900px){
+  .ask-layout{padding-top:28px}
+  .ask-header{font-size:18px}
+  .ask-header span{font-size:12px}
+  .ask-hero h1{font-size:clamp(68px,11vw,118px)}
+  .ask-avatar{right:0;top:0;width:165px}
+  .ask-avatar>img{width:165px;height:165px;border-radius:28px}
+  .ask-status{width:165px}
+  .ask-status-options{top:220px;width:165px}
+  .ask-contact a{font-size:28px}
+  .ask-copy,.ask-copy button{width:175px}
+  .ask-copy button{font-size:16px}
+  .ask-card p{font-size:16px}
+}
+@media(max-width:600px){
+  .ask-layout{padding-bottom:28px}
+  .ask-header{height:60px;font-size:14px}
+  .ask-header span{font-size:9px}
+  .ask-hero{min-height:210px;margin-top:30px}
+  .ask-eyebrow{font-size:11px;line-height:1.4}
+  .ask-hero h1{font-size:clamp(60px,17vw,82px);margin:12px 0 18px}
+  .ask-intro{font-size:17px}
+  .ask-avatar{width:92px;top:8px}
+  .ask-avatar>img{width:92px;height:92px;border-radius:18px}
+  .ask-status{width:92px;height:28px;margin-top:7px;padding:4px 7px;font-size:10px}
+  .ask-status-options{top:135px;width:120px}
+  .ask-switch{height:64px;margin-top:24px}
+  .ask-switch a{font-size:15px}
+  .ask-contact{display:block;margin-top:28px;padding:22px;border-radius:20px}
+  .ask-contact p{font-size:12px}
+  .ask-contact a{font-size:22px}
+  .ask-copy{width:100%;margin-top:18px}
+  .ask-copy button{width:100%;min-height:48px;font-size:16px}
+  .ask-connect{margin-top:36px}
+  .ask-connect h2{font-size:28px;margin:8px 0 22px}
+  .ask-grid{grid-template-columns:1fr;gap:18px}
+  .ask-card{min-height:370px;padding:22px;border-radius:18px}
+  .ask-card h3{font-size:24px;margin:12px 0}
+  .ask-card p{font-size:15px}
+  .ask-image-slot{height:145px;margin-top:20px}
+  .ask-card-empty{min-height:260px}
+  .ask-footer{margin-top:36px;font-size:11px}
+}
