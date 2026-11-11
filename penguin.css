@@ -14,6 +14,76 @@
 }
 
 .roaming-penguin.is-dragging { cursor: grabbing; }
+.roaming-penguin.is-dragging { z-index: 41; }
+
+.penguin-pit {
+  position: fixed;
+  right: 20px;
+  bottom: 67px;
+  z-index: 39;
+  width: 112px;
+  height: 67px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.penguin-pit.is-visible { opacity: 1; visibility: visible; }
+
+.penguin-pit-arrow {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 2px;
+  fill: #ffe500;
+  stroke: #202020;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .3));
+}
+
+.penguin-pit-hole {
+  box-sizing: border-box;
+  width: 100%;
+  height: 27px;
+  border: 3px solid #58514b;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #0a0b11 35%, #29252b 75%);
+  box-shadow: 0 3px 0 #302b2b, inset 0 2px 5px #000;
+  transition: transform .15s ease, border-color .15s ease;
+}
+
+.penguin-pit.is-targeted .penguin-pit-hole {
+  transform: scale(1.12);
+  border-color: #ffe500;
+}
+
+.penguin-celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.penguin-confetti {
+  position: absolute;
+  top: -24px;
+  left: var(--x);
+  width: 10px;
+  height: 18px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: penguin-confetti-fall var(--duration) var(--delay) ease-in forwards;
+}
+
+@keyframes penguin-confetti-fall {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); }
+  100% { opacity: 0; transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin)); }
+}
 
 .roaming-penguin.is-dragging .roaming-penguin-sprite {
   background-image: url('assets/penguin-grabbed.png');

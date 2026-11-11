@@ -34,7 +34,11 @@ const penguinDialogues = [
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'penguin-toggle';
-  document.body.append(toggle);
+  const pit = document.createElement('div');
+  pit.className = 'penguin-pit';
+  pit.setAttribute('aria-label', '把企鹅拖进这里，它就会消失');
+  pit.innerHTML = '<svg class="penguin-pit-arrow" viewBox="0 0 40 40" aria-hidden="true"><path d="M15 3h10v19h9L20 37 6 22h9z"/></svg><span class="penguin-pit-hole" aria-hidden="true"></span>';
+  document.body.append(pit, toggle);
 
   const random = (min, max) => min + Math.random() * (max - min);
   const penguins = [];
@@ -86,6 +90,8 @@ const penguinDialogues = [
     let speechTimer;
     let speechFrame;
     let moveToken = 0;
+    let inertiaFrame;
+    let dragSamples = [];
 
     const size = () => penguin.offsetWidth;
     const bounds = () => {
@@ -121,6 +127,7 @@ const penguinDialogues = [
     };
     const freeze = () => {
       moveToken += 1;
+      cancelAnimationFrame(inertiaFrame);
       const point = clamp(currentPoint());
       penguin.style.transition = 'none';
       place(point);
@@ -215,6 +222,7 @@ const penguinDialogues = [
     penguin.addEventListener('pointerdown', event => {
       if (event.button !== 0) return;
       pointerStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      dragSamples = [];
       penguin.setPointerCapture(event.pointerId);
     });
     penguin.addEventListener('pointermove', event => {
@@ -225,25 +233,83 @@ const penguinDialogues = [
         const point = freeze();
         grabOffset = { x: event.clientX - point.x, y: event.clientY - point.y };
         dragging = true;
+        dragSamples = [{ x: event.clientX, y: event.clientY, time: performance.now() }];
         penguin.classList.add('is-dragging');
       }
       if (dragging) {
         place(clamp({ x: event.clientX - grabOffset.x,
           y: event.clientY - grabOffset.y }));
+        const now = performance.now();
+        dragSamples.push({ x: event.clientX, y: event.clientY, time: now });
+        dragSamples = dragSamples.filter(sample => now - sample.time <= 120);
+        const rect = pit.getBoundingClientRect();
+        pit.classList.toggle('is-targeted', event.clientX >= rect.left &&
+          event.clientX <= rect.right && event.clientY >= rect.top &&
+          event.clientY <= rect.bottom);
       }
     });
+    function glide(vx, vy) {
+      let point = currentPoint();
+      let previousTime = performance.now();
+      const step = now => {
+        if (!active || dragging || document.hidden) return;
+        const elapsed = Math.min(32, now - previousTime);
+        previousTime = now;
+        const next = clamp({ x: point.x + vx * elapsed, y: point.y + vy * elapsed });
+        if (next.x === point.x) vx = 0;
+        if (next.y === point.y) vy = 0;
+        point = next;
+        place(point);
+        const friction = Math.pow(.92, elapsed / 16);
+        vx *= friction;
+        vy *= friction;
+        if (Math.hypot(vx, vy) > .025) {
+          inertiaFrame = requestAnimationFrame(step);
+        } else {
+          scheduleMove(walk, 500);
+        }
+      };
+      penguin.style.transition = 'none';
+      inertiaFrame = requestAnimationFrame(step);
+    }
     const release = event => {
       if (!pointerStart || event.pointerId !== pointerStart.id) return;
+      const droppedInPit = dragging && event.type === 'pointerup' && (() => {
+        const rect = pit.getBoundingClientRect();
+        return event.clientX >= rect.left && event.clientX <= rect.right &&
+          event.clientY >= rect.top && event.clientY <= rect.bottom;
+      })();
       if (dragging) {
         lastDragEnd = performance.now();
         dragging = false;
         penguin.classList.remove('is-dragging');
-        if (!reducedMotion.matches) scheduleMove(walk, 150);
+        if (!droppedInPit && !reducedMotion.matches) {
+          const first = dragSamples[0];
+          const last = dragSamples.at(-1);
+          const elapsed = last?.time - first?.time;
+          if (elapsed > 0 && performance.now() - last.time < 100) {
+            const vx = Math.max(-1.8, Math.min(1.8, (last.x - first.x) / elapsed));
+            const vy = Math.max(-1.8, Math.min(1.8, (last.y - first.y) / elapsed));
+            if (Math.hypot(vx, vy) > .12) glide(vx, vy);
+            else scheduleMove(walk, 500);
+          } else scheduleMove(walk, 500);
+        }
       }
+      dragSamples = [];
       pointerStart = null;
       grabOffset = null;
       if (penguin.hasPointerCapture(event.pointerId)) {
         penguin.releasePointerCapture(event.pointerId);
+      }
+      pit.classList.remove('is-targeted');
+      if (droppedInPit) {
+        const index = penguins.indexOf(dispose);
+        if (index !== -1) penguins.splice(index, 1);
+        dispose();
+        if (!penguins.length) {
+          setEnabled(false);
+          celebratePenguins();
+        }
       }
     };
     penguin.addEventListener('pointerup', release);
@@ -274,9 +340,10 @@ const penguinDialogues = [
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     enter();
-    return () => {
+    const dispose = () => {
       active = false;
       moveToken += 1;
+      cancelAnimationFrame(inertiaFrame);
       clearTimeout(moveTimer);
       clearTimeout(speechTimer);
       cancelAnimationFrame(speechFrame);
@@ -285,17 +352,42 @@ const penguinDialogues = [
       document.removeEventListener('visibilitychange', onVisibilityChange);
       penguin.remove();
     };
+    return dispose;
+  }
+
+  function celebratePenguins() {
+    document.querySelector('.penguin-celebration')?.remove();
+    const celebration = document.createElement('div');
+    celebration.className = 'penguin-celebration';
+    celebration.setAttribute('role', 'status');
+    celebration.setAttribute('aria-label', '企鹅收集完成');
+    if (!reducedMotion.matches) {
+      const colors = ['#ffe500', '#ff66a3', '#49c7e8', '#8c5bd6', '#53c982', '#ff9c45'];
+      for (let i = 0; i < 80; i += 1) {
+        const piece = document.createElement('span');
+        piece.className = 'penguin-confetti';
+        piece.style.setProperty('--x', `${random(0, 100)}vw`);
+        piece.style.setProperty('--delay', `${random(0, .7)}s`);
+        piece.style.setProperty('--duration', `${random(2, 3.2)}s`);
+        piece.style.setProperty('--drift', `${random(-110, 110)}px`);
+        piece.style.setProperty('--spin', `${random(-720, 720)}deg`);
+        piece.style.backgroundColor = colors[i % colors.length];
+        celebration.append(piece);
+      }
+    }
+    document.body.append(celebration);
+    setTimeout(() => celebration.remove(), 4000);
   }
 
   function setEnabled(next) {
     enabled = next;
+    pit.classList.toggle('is-visible', next);
     toggle.textContent = next ? 'Penguins: On' : 'Penguins: Off';
     toggle.setAttribute('aria-pressed', String(next));
     toggle.setAttribute('aria-label', next ? 'Hide penguins' : 'Show penguins');
     try { localStorage.setItem(storageKey, String(next)); } catch {}
     if (next) {
-      const edges = innerWidth <= 600 ? ['left', 'right']
-        : ['top', 'right', 'bottom', 'left'];
+      const edges = ['top', 'right', 'bottom', 'left'];
       edges.forEach((edge, index) => penguins.push(addPenguin(index, edge)));
     } else {
       while (penguins.length) penguins.pop()();

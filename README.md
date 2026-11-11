@@ -11,6 +11,6 @@ Personal portfolio website adapted from the [Figma design](https://www.figma.com
 - `games.html` — Mini Games
 - `iris.html` — IRIS
 
-The site includes optional roaming penguins. Turn them on with the button at the bottom right; click one to see a message, or drag it around the page. The 26 messages are editable in `penguin.js`.
+The site includes optional roaming penguins. Turn them on with the button at the bottom right; click one to see a message, drag and release one to let it glide, or drop it into the collection hole to remove it. Collecting all four triggers a celebration. The 26 messages are editable in `penguin.js`.
 
 This is a static site. Open `index.html` locally or visit [raininsun112233.github.io](https://raininsun112233.github.io/).
